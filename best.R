@@ -26,15 +26,27 @@ best <- function(state,outcome){
       
       if (t_state == FALSE) stop("invalid state") # check the condition and break if necessary
       
-      #now we need to check the outcome is valid
-      c_outcomes <- c("heart attack","heart failure","pneumonia")
+      #store the column numbers and names in a list
+      c_outcomes <- list("heart attack"=11,"heart failure"=17,"pneumonia"=23)
       
-      if(outcome %in% c_outcomes == FALSE) stop("invalid outcome") #check the condition and break if necessary
+      
+      if(outcome %in% names(c_outcomes) == FALSE) stop("invalid outcome") #check the condition and break if necessary
       
       
       # now that we have passed the checks do the body of the function
       
-            #lets extract the columns of interest from the df_outcome (namely hospital.name and )
       
+            #lets extract the columns of interest from the df_outcome (namely hospital.name and the selected outcome col)
       
+      v_colOfInt <- c_outcomes$outcome #get the col number of the outcome of interest
+      
+      #subset the values of the cols of interest in the a df
+      
+      df_outOfInt <- df_outcome[,c(2,7,v_colOfInt)]
+      
+      #cast the mortality rate column as numeric
+      df_outOfInt[,3] <- as.numeric(df_outOfInt[,3])
+      
+      #lets recover only complete cases
+      df_outOfInt <- df_outOfInt[complete.cases(df_outOfInt),]
 }
