@@ -38,15 +38,25 @@ best <- function(state,outcome){
       
             #lets extract the columns of interest from the df_outcome (namely hospital.name and the selected outcome col)
       
-      v_colOfInt <- c_outcomes$outcome #get the col number of the outcome of interest
+      v_colOfInt <- c_outcomes[[outcome]] #get the col numer of the outcome of intrest
       
-      #subset the values of the cols of interest in the a df
+      #subset the values of the cols and rows of interest in the a df
       
-      df_outOfInt <- df_outcome[,c(2,7,v_colOfInt)]
+      df_outOfInt <- subset(df_outcome, State == state,select=c(2,7,v_colOfInt))
       
       #cast the mortality rate column as numeric
       df_outOfInt[,3] <- as.numeric(df_outOfInt[,3])
       
       #lets recover only complete cases
       df_outOfInt <- df_outOfInt[complete.cases(df_outOfInt),]
+      
+      #order the data frame by ascending order for death rate and hospital.name
+      df_outOfInt <- df_outOfInt[order(df_outOfInt[,3],df_outOfInt[,1]),]
+      
+      top <- as.vector(df_outOfInt[1,1])
+      
+      #set back to the rpog wd so that dont have to keep setting it to submit
+      setwd("C:/Users/HAZARDAZ/Documents/Data Science/Assignment 3/rprog-data-ProgAssignment3-data/ProgAssig3")
+      return(top)
+      
 }
